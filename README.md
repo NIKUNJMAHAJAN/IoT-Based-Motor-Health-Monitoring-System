@@ -63,16 +63,11 @@ A composite health score is calculated locally on the ESP32.
 
 The current implementation converts temperature, current, and vibration into normalized stress values and combines them using the following weights:
 
-\[
-\text{Stress} =
-0.50(\text{Temperature Stress}) +
-0.25(\text{Current Stress}) +
-0.25(\text{Vibration Stress})
-\]
+The overall stress score is calculated as:
 
-\[
-\text{Health Score} = 100 - \text{Stress}
-\]
+**Stress = 0.50 × Temperature Stress + 0.25 × Current Stress + 0.25 × Vibration Stress**
+
+**Health Score = 100 − Stress**
 
 The resulting value is constrained to the range **0–100**.
 
@@ -152,27 +147,21 @@ These thresholds can be tuned in the firmware and need to be calibrated to the s
 
 The MPU6050 provides 3-axis accelerometer measurements:
 
-- \(a_x\)
-- \(a_y\)
-- \(a_z\)
+- `a_x` — acceleration along the X-axis
+- `a_y` — acceleration along the Y-axis
+- `a_z` — acceleration along the Z-axis
 
-The firmware calculates acceleration magnitude:
+The firmware calculates the acceleration magnitude as:
 
-\[
-a_{mag} = \sqrt{a_x^2 + a_y^2 + a_z^2}
-\]
+**a_mag = √(a_x² + a_y² + a_z²)**
 
-During calibration, the system records multiple acceleration-magnitude samples and establishes an average baseline:
+During calibration, the system records multiple acceleration-magnitude samples and calculates the average baseline:
 
-\[
-a_{base} = \frac{1}{N}\sum_{i=1}^{N} a_{mag,i}
-\]
+**a_base = (1/N) × Σ(a_mag,i), for i = 1 to N**
 
 The vibration indicator is then calculated as:
 
-\[
-Vibration = |a_{mag} - a_{base}|
-\]
+**Vibration = |a_mag − a_base|**
 
 The **Tare/Calibration** operation on the dashboard recalculates this baseline with 40 samples.
 
