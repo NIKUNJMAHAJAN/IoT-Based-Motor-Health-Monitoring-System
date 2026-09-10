@@ -6,8 +6,8 @@
 #include <Adafruit_Sensor.h>
 
 // wifi
-const char* ssid     = "Subham022";
-const char* password = "12345678";
+const char* ssid     = "Your_ssid";
+const char* password = "Your_psswd";
 
 WebServer server(80);
 
